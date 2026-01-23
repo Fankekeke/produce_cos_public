@@ -57,7 +57,7 @@ public interface IOrderInfoService extends IService<OrderInfo> {
      * @param remark  物流信息
      * @return 结果
      */
-    boolean orderShip(Integer orderId, String remark);
+    boolean orderShip(Integer orderId, String remark, String orderDetail);
 
     /**
      * 订单付款

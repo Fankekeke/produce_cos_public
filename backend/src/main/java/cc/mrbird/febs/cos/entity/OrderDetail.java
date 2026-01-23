@@ -49,6 +49,16 @@ public class OrderDetail implements Serializable {
     private BigDecimal allPrice;
 
     /**
+     * 溯源信息
+     */
+    private String content;
+
+    /**
+     * 二维码
+     */
+    private String qrCode;
+
+    /**
      * 所属订单
      */
     private Integer orderId;
@@ -64,4 +74,5 @@ public class OrderDetail implements Serializable {
 
     @TableField(exist = false)
     private String userName;
+
 }

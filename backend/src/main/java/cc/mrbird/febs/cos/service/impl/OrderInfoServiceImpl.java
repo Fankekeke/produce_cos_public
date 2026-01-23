@@ -12,6 +12,7 @@ import cc.mrbird.febs.cos.entity.vo.OrderSubVo;
 import cc.mrbird.febs.cos.service.*;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -53,7 +54,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     /**
      * 分页获取订单信息
      *
-     * @param page     分页对象
+     * @param page      分页对象
      * @param orderInfo 订单信息
      * @return 结果
      */
@@ -66,7 +67,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
      * 添加订单信息
      *
      * @param orderInfoVo 订单信息
-     * @param flag 是否付款完成（0.否 1.是）
+     * @param flag        是否付款完成（0.否 1.是）
      * @return 结果
      */
     @Override
@@ -218,7 +219,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
             this.save(orderItem);
             // 总价格
             BigDecimal totalCost = BigDecimal.ZERO;
-            for (OrderSubVo orderSubItem: value) {
+            for (OrderSubVo orderSubItem : value) {
                 OrderDetail orderDetail = new OrderDetail();
                 orderDetail.setDrugId(orderSubItem.getDrugId());
                 orderDetail.setQuantity(orderSubItem.getTotal().intValue());
@@ -321,12 +322,13 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     /**
      * 订单发货
      *
-     * @param orderId 订单ID
-     * @param remark  物流信息
+     * @param orderId     订单ID
+     * @param remark      物流信息
+     * @param orderDetail 产品溯源信息
      * @return 结果
      */
     @Override
-    public boolean orderShip(Integer orderId, String remark) {
+    public boolean orderShip(Integer orderId, String remark, String orderDetail) {
         logisticsInfoService.update(Wrappers.<LogisticsInfo>lambdaUpdate().set(LogisticsInfo::getCurrentLogistics, 0).eq(LogisticsInfo::getOrderId, orderId));
         LogisticsInfo logisticsInfo = new LogisticsInfo();
         logisticsInfo.setCreateDate(DateUtil.formatDateTime(new Date()));
@@ -337,6 +339,57 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         orderInfo.setId(orderId);
         orderInfo.setOrderStatus(2);
         this.updateById(orderInfo);
+
+        if (StrUtil.isNotEmpty(orderDetail)) {
+            List<OrderDetail> toUpdateOrderDetailList = new ArrayList<>();
+            List<OrderDetail> orderDetailList = JSONUtil.toList(orderDetail, OrderDetail.class);
+            Map<Integer, OrderDetail> detailMap = orderDetailList.stream().collect(Collectors.toMap(OrderDetail::getId, e -> e));
+            // 获取订单详情
+            List<OrderDetail> detailList = orderDetailService.list(Wrappers.<OrderDetail>lambdaQuery().eq(OrderDetail::getOrderId, orderId));
+            for (OrderDetail detail : detailList) {
+                OrderDetail currentOrderDetail = detailMap.get(detail.getId());
+                if (currentOrderDetail != null) {
+                    detail.setContent(currentOrderDetail.getContent());
+                    // 定义二维码内容（可以是订单链接或订单号）
+                    String content = currentOrderDetail.getContent();
+                    // 定义二维码保存路径
+                    String filePath = "G:/Project/农产品销售系统/file/";
+                    // 随机数
+                    String random = RandomUtil.randomNumbers(6);
+                    String fileName = "order_" + orderInfo.getCode() + "_" +  random + ".png";
+                    detail.setQrCode(fileName);
+                    String fullPath = filePath + fileName;
+                    // 创建目录（如果不存在）
+                    java.io.File directory = new java.io.File(filePath);
+                    if (!directory.exists()) {
+                        directory.mkdirs();
+                    }
+                    // 生成二维码
+                    com.google.zxing.Writer writer = new com.google.zxing.qrcode.QRCodeWriter();
+                    com.google.zxing.common.BitMatrix bitMatrix = null;
+                    try {
+                        bitMatrix = writer.encode(content,
+                                com.google.zxing.BarcodeFormat.QR_CODE, 300, 300);
+
+                        // 保存为图片文件
+                        java.nio.file.Path path = java.nio.file.Paths.get(fullPath);
+                        java.awt.image.BufferedImage image = new java.awt.image.BufferedImage(300, 300, java.awt.image.BufferedImage.TYPE_INT_RGB);
+                        for (int x = 0; x < 300; x++) {
+                            for (int y = 0; y < 300; y++) {
+                                image.setRGB(x, y, bitMatrix.get(x, y) ? 0xFF000000 : 0xFFFFFFFF);
+                            }
+                        }
+                        javax.imageio.ImageIO.write(image, "PNG", path.toFile());
+                        toUpdateOrderDetailList.add(detail);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+            if (CollectionUtil.isNotEmpty(toUpdateOrderDetailList)) {
+                orderDetailService.updateBatchById(toUpdateOrderDetailList);
+            }
+        }
         return logisticsInfoService.save(logisticsInfo);
     }
 }
