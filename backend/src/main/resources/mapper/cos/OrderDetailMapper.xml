@@ -51,6 +51,7 @@
         od.unit_price,
         od.all_price,
         od.order_id,
+        od.qr_code,
         di.name AS drugName,
         di.brand,
         di.images,

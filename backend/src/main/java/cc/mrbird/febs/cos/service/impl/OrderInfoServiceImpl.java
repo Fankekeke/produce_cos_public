@@ -352,11 +352,20 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                     detail.setContent(currentOrderDetail.getContent());
                     // 定义二维码内容（可以是订单链接或订单号）
                     String content = currentOrderDetail.getContent();
+
+                    // 对中文内容进行编码处理，避免乱码
+                    String encodedContent = "";
+                    try {
+                        encodedContent = java.net.URLEncoder.encode(content, "UTF-8");
+                    } catch (java.io.UnsupportedEncodingException e) {
+                        encodedContent = content; // 如果编码失败，使用原始内容
+                    }
+
                     // 定义二维码保存路径
                     String filePath = "G:/Project/农产品销售系统/file/";
                     // 随机数
                     String random = RandomUtil.randomNumbers(6);
-                    String fileName = "order_" + orderInfo.getCode() + "_" +  random + ".png";
+                    String fileName = "order_" + orderInfo.getId() + "_" + random + ".png";
                     detail.setQrCode(fileName);
                     String fullPath = filePath + fileName;
                     // 创建目录（如果不存在）
@@ -364,12 +373,16 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                     if (!directory.exists()) {
                         directory.mkdirs();
                     }
-                    // 生成二维码
+                    // 生成二维码时添加编码配置
+                    java.util.Map<com.google.zxing.EncodeHintType, Object> hints = new java.util.HashMap<>();
+                    hints.put(com.google.zxing.EncodeHintType.CHARACTER_SET, "UTF-8");
+                    hints.put(com.google.zxing.EncodeHintType.MARGIN, 1);
+
                     com.google.zxing.Writer writer = new com.google.zxing.qrcode.QRCodeWriter();
                     com.google.zxing.common.BitMatrix bitMatrix = null;
                     try {
                         bitMatrix = writer.encode(content,
-                                com.google.zxing.BarcodeFormat.QR_CODE, 300, 300);
+                                com.google.zxing.BarcodeFormat.QR_CODE, 300, 300, hints);
 
                         // 保存为图片文件
                         java.nio.file.Path path = java.nio.file.Paths.get(fullPath);

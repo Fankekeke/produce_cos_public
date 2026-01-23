@@ -129,6 +129,18 @@ export default {
       }, {
         title: '单价',
         dataIndex: 'unitPrice'
+      }, {
+        title: '溯源信息',
+        dataIndex: 'qrCode',
+        customRender: (text, record, index) => {
+          if (!record.qrCode) return <a-avatar shape="square" icon="user" />
+          return <a-popover>
+            <template slot="content">
+              <a-avatar shape="square" size={132} icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.qrCode.split(',')[0] } />
+            </template>
+            <a-avatar shape="square" icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.qrCode.split(',')[0] } />
+          </a-popover>
+        }
       }]
     },
     logisticsColumns () {

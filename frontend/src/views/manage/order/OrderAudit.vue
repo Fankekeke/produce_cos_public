@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model="show" title="订单处理" @cancel="onClose" :width="800">
+  <a-modal v-model="show" title="订单处理" @cancel="onClose" :width="1000">
     <template slot="footer">
       <a-button key="back" @click="submit" type="primary">
         发货
@@ -134,6 +134,21 @@ export default {
       }, {
         title: '单价',
         dataIndex: 'unitPrice'
+      }, {
+        title: '溯源信息',
+        key: 'action',
+        customRender: (text, record, index) => {
+          return (
+            <div>
+              <a-input
+                value={record.content}
+                placeholder="输入溯源信息"
+                style={{ width: '200px', marginBottom: '5px' }}
+                onChange={(e) => this.handleTraceabilityChange(e.target.value, record)}
+              />
+            </div>
+          )
+        }
       }]
     }
   },
@@ -155,14 +170,31 @@ export default {
         remark: ''
       },
       staffList: [],
-      durgList: []
+      durgList: [],
+      editingTraceability: {} // 用于存储正在编辑的溯源信息
     }
   },
   methods: {
     moment,
+    // 处理溯源信息变更
+    handleTraceabilityChange (value, record) {
+      // 直接更新 durgList 中对应记录的 content 属性
+      const itemIndex = this.durgList.findIndex(item => item.key === record.key)
+      if (itemIndex > -1) {
+        this.$set(this.durgList[itemIndex], 'content', value)
+      }
+    },
+
     selectOrderDetail (orderId) {
       this.$get(`/cos/order-detail/detail/${orderId}`).then((r) => {
-        this.durgList = r.data.data
+        // 为每个项目添加唯一key
+        r.data.data.forEach(item => {
+          item.content = '暂无溯源信息'
+        })
+        this.durgList = r.data.data.map((item, index) => ({
+          ...item,
+          key: `${item.id}_${index}` // 确保每个项目的key唯一
+        }))
       })
     },
     selectStaffByProduct (productId) {
@@ -196,9 +228,15 @@ export default {
       }
     },
     submit () {
-      this.$get(`/cos/order-info/ship`, {
-        'orderId': this.orderAuditData.id,
-        'remark': this.auditData.remark
+      let orderDetail = this.durgList.map(item => ({
+        id: item.id,
+        content: item.content
+      }))
+      console.log(JSON.stringify(orderDetail))
+      this.$put(`/cos/order-info/orderShipFix`, {
+        'id': this.orderAuditData.id,
+        'remark': this.auditData.remark,
+        'orderDetail': JSON.stringify(orderDetail)
       }).then((r) => {
         this.cleanData()
         this.$emit('success')
