@@ -70,4 +70,10 @@ public class OrderInfo implements Serializable {
     @TableField(exist = false)
     private String pharmacyName;
 
+    @TableField(exist = false)
+    private String remark;
+
+    @TableField(exist = false)
+    private String orderDetail;
+
 }

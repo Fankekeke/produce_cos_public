@@ -114,8 +114,19 @@ public class OrderInfoController {
      * @return 结果
      */
     @GetMapping("/ship")
-    public R orderShip(@RequestParam("orderId") Integer orderId, @RequestParam("remark") String remark, @RequestParam("orderDetail") String orderDetail) {
-        return R.ok(orderInfoService.orderShip(orderId, remark, orderDetail));
+    public R orderShip(@RequestParam("orderId") Integer orderId, @RequestParam("remark") String remark) {
+        return R.ok(orderInfoService.orderShip(orderId, remark, null));
+    }
+
+    /**
+     * 订单发货（添加溯源）
+     *
+     * @param orderInfo 发货信息
+     * @return 结果
+     */
+    @PutMapping("/orderShipFix")
+    public R orderShipFix(OrderInfo  orderInfo) {
+        return R.ok(orderInfoService.orderShip(orderInfo.getId(), orderInfo.getRemark(), orderInfo.getOrderDetail()));
     }
 
     /**
