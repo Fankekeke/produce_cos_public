@@ -1,86 +1,199 @@
-### 基于SpringBoot + Vue的农产品销售系统
+![](https://img.shields.io/badge/License-MIT-blue.svg)
 
-生鲜农产品销售系统、农村电商管理系统、农产品在线交易系统
+![](https://img.shields.io/badge/Version-1.0.0-brightgreen.svg)
 
-#### 管理员功能模块介绍：
-###### 公告管理：发布平台通知、促销活动或农产品供应信息。产品管理：维护农产品基本信息，包括名称、规格、产地等。库存统计：汇总各销售店及库房的农产品实时库存数据。物流信息：跟踪农产品从仓库到用户的配送与运输状态。订单详情：查看每笔订单的商品、数量、价格及履约进度。订单评价：浏览用户对农产品质量与服务的评分和留言。订单信息：统一管理所有用户提交的农产品购买订单。缴费记录：查询用户支付订单的金额、时间及支付方式。销售店管理：维护线下或合作销售网点的基本信息与状态。产店库存：监控各销售店的农产品库存数量与周转情况。员工管理：管理平台及门店工作人员账号与岗位权限。用户管理：查看和维护注册用户资料及账户状态。数据统计：分析用户行为、订单量、访问量等运营指标。销售排行：生成热销农产品或销售店的排名榜单。员工统计：统计员工绩效、处理订单数或服务评价数据。管理员管理：配置后台管理员账号及操作权限分级。供应采购：制定农产品采购计划并发起采购流程。供应商管理：维护合作农户或合作社的资质与供货信息。产品答疑：审核并回复用户关于农产品的咨询问题。产品采购：执行具体农产品的采购下单与合同管理。库房预警：自动提醒库存不足或临近过期的农产品。销售统计：按日/月/年生成销售额、销量等分析报表。采购物流：跟踪采购农产品从供应商到仓库的运输过程。
+![](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
-#### 用户功能模块介绍：
-###### 我的信息：集中展示个人账户概览及常用功能入口。个人信息：编辑姓名、联系方式、收货地址等资料。我的订单：查看历史及当前农产品订单状态与物流信息。缴费记录：查阅已完成支付的订单费用及支付凭证。订单评价：对已收货的农产品进行质量评分与文字评价。产品购买：浏览农产品目录，选择商品并提交购买订单。支付结果：显示支付成功或失败状态，并提供订单确认。
+# 基于 SpringBoot + Vue 的农产品销售系统 (Agricultural Products Sales System)
+
+农产品展示 · 在线购买 · 库存管理 · 采购供应 · 物流跟踪 · 数据统计 · 支付宝支付
+
+本项目是一套面向新能源汽车用户的智慧充电预约小程序平台，采用 SpringBoot + Vue 前后端分离架构，支持用户端小程序、商家端管理后台与平台管理员后台协同工作。平台围绕“找桩—预约—充电—结算—评价”完整流程设计，提供充电桩状态监控、在线预约、订单管理、会员体系、优惠券、积分兑换、社区论坛及数据统计等功能，适用于社区、园区、商场及公共充电场站的充电运营管理场景。
 
 #### 安装环境
+️**注意**：请确保您的开发环境已安装以下依赖。
 
 JAVA 环境 
 
 Node.js环境 [https://nodejs.org/en/] 选择14.17
 
-Yarn 打开cmd， 输入npm install -g yarn !!!必须安装完毕nodejs 
+Yarn 打开cmd， 输入npm install -g yarn !!!必须安装完毕nodejs
 
-Mysql 数据库 [https://blog.csdn.net/qq_40303031/article/details/88935262] 一定要把账户和密码记住
+Mysql 数据库 一定要把账户和密码记住
 
-redis 
+redis
 
-Idea 编译器 [https://blog.csdn.net/weixin_44505194/article/details/104452880]
+Idea 编译器
 
-WebStorm OR VScode 编译器 [https://www.jianshu.com/p/d63b5bae9dff]
+WebStorm OR VScode 编译器
 
 #### 采用技术及功能
 
 后端：SpringBoot、MybatisPlus、MySQL、Redis、
-前端：Vue、Apex、Antd、Axios、baidu.js
+前端：Vue、Apex、Antd、Axios
 
+平台前端：vue(框架) + vuex(全局缓存) + rue-router(路由) + axios(请求插件) + apex(图表)  + antd-ui(ui组件) + 百度地图 API
 
 平台后台：springboot(框架) + redis(缓存中间件) + shiro(权限中间件) + mybatisplus(orm) + restful风格接口 + mysql(数据库)
 
 开发环境：windows10 or windows7 ， vscode or webstorm ， idea + lambok
 
-支付使用阿里沙盒支付
+---
+
+## 核心特性
+
+- **农产品全流程管理**：支持农产品上架、编辑、上下架、分类管理与产地溯源信息展示。
+- **库存统计与库房预警**：实时监控各销售店与仓库库存，设置库存下限自动触发补货预警。
+- **供应采购管理**：支持供应商管理、采购订单生成、采购入库与采购物流跟踪。
+- **销售店与产店库存**：管理多个销售门店/网点，支持各门店独立库存与调拨管理。
+- **订单全生命周期管理**：覆盖下单、支付、发货、物流跟踪、收货确认与评价完整流程。
+- **支付宝在线支付**：集成支付宝支付接口，支持用户在线完成订单缴费。
+- **物流信息跟踪**：记录订单物流单号与配送状态，用户可实时查看物流进度。
+- **多维度数据统计**：支持首页统计看板、销售排行、员工统计、月份统计与销售趋势分析。
+- **产品答疑与互动**：用户可对产品发起咨询，管理员或销售店在线回复解答。
+- **违规记录管理**：记录异常订单、恶意评价、违规用户等行为，支持处理与封禁。
+---
+
+## 适用场景
+
+- 农产品电商平台在线销售
+- 农业合作社产品直销
+- 农户线上开店与订单管理
+- 多销售门店库存协同管理
+- 农产品供应链采购与入库管理
+- 消费者在线选购与支付宝支付
+- 销售数据统计与经营分析
+- 产品咨询答疑与用户评价管理
+---
+
+## 功能模块概览
+
+### 管理员端
+
+管理员端负责平台整体运营、商品管理、供应链管控、订单处理与数据统计分析：
+
+**系统基础管理**
+
+- **首页统计看板**：展示今日订单数、销售额、用户数、库存预警数、待处理事项等核心指标，以图表形式呈现销售趋势与热门产品。
+- **公告管理**：发布平台公告、促销活动、农产品上新通知与系统维护信息。
+- **用户管理**：管理注册用户账号、实名认证状态、收货地址与违规处理。
+- **员工管理**：管理销售店员工账号、角色权限、所属门店与操作日志。
+- **管理员管理**：管理后台管理员账号、角色分配与权限配置。
+
+**产品与库存管理**
+
+- **产品管理**：管理农产品信息，包括名称、分类、产地、规格、价格、图片、描述与上下架状态。
+- **库存统计**：统计各产品、各销售店的库存总量、可用库存与预警状态。
+- **产店库存**：管理各销售门店/网点的独立库存，支持库存调拨与盘点。
+- **库房预警**：设置库存下限阈值，自动预警库存不足产品，生成补货建议。
+- **销售店管理**：管理线下销售门店信息，包括门店名称、地址、负责人、联系方式与营业状态。
+
+**供应与采购管理**
+
+- **供应商管理**：管理供应商档案，包括名称、联系人、联系方式、供应产品与信用评级。
+- **供应采购**：查看采购需求，生成采购计划，管理采购订单与采购进度。
+- **产品采购**：执行采购下单、采购入库、采购验收与采购结算。
+- **采购物流**：跟踪采购订单物流状态，记录到货时间与入库信息。
+
+**订单与物流管理**
+
+- **订单信息**：查看所有用户订单，包括订单号、下单时间、商品信息、金额与支付状态。
+- **订单详情**：查看订单详细信息，包括收货地址、支付方式、物流单号与操作记录。
+- **订单评价**：查看用户对订单与产品的评价，处理差评与投诉。
+- **物流信息**：管理订单物流单号，更新配送状态，支持物流轨迹查询。
+- **缴费记录**：查看所有支付记录，包括支付金额、支付方式、支付时间与对账信息。
+
+**数据统计与分析**
+
+- **数据统计**：展示平台整体销售数据、用户增长趋势、产品销量分布与订单转化率。
+- **销售排行**：按产品、分类、销售店维度统计销售排行，识别热销与滞销产品。
+- **员工统计**：统计各员工处理的订单数、销售额与服务评价。
+- **月份统计**：按月度统计销售额、订单量、新增用户与库存周转情况。
+
+**互动与违规管理**
+
+- **产品答疑**：查看用户对产品的咨询留言，安排销售店或管理员在线回复。
+- **违规记录**：记录恶意刷单、虚假评价、违规用户等行为，支持警告、封禁与申诉处理。
+- **用户消息**：向用户推送订单状态、发货通知、活动信息与系统公告。
+
+### 用户端（消费者）
+
+用户端面向农产品消费者，提供产品浏览、在线购买、支付与订单管理服务：
+
+**账户与个人信息**
+
+- **账户注册登录**：支持手机号注册登录，密码加密存储。
+- **密码修改**：支持在线修改登录密码，保障账户安全。
+- **我的信息 / 个人信息**：维护姓名、手机号、收货地址、头像等个人资料。
+
+**购物与订单服务**
+
+- **产品购买**：浏览农产品列表与详情，加入购物车，选择规格与数量提交订单。
+- **我的订单**：查看订单列表与详情，跟踪订单状态（待支付、已支付、已发货、已完成）。
+- **缴费记录**：查看历史支付记录，包括支付金额、时间与订单关联信息。
+- **支付宝在线支付**：下单后通过支付宝完成在线支付，支付状态实时同步。
+- **订单评价**：对已完成订单进行评分与文字评价，分享购物体验。
+
+**消息通知**
+
+- **我的消息**：接收订单状态变更、发货通知、物流更新、活动推送与系统公告。
+
+---
+
+## 项目结构
+
+```text
+pharmacy-dispensing-system/
+├── backend/            # 后端 API 服务
+│   ├── src/
+│   │   ├── controllers/  # 控制器
+│   │   ├── models/       # 数据模型
+│   │   ├── routes/       # 路由
+│   │   └── services/     # 业务逻辑
+│   └── package.json
+├── frontend/           # 前端 Web 应用
+│   ├── src/
+│   │   ├── views/      # 页面视图
+│   │   ├── components/ # 公共组件
+│   │   └── store/      # 状态管理
+│   └── package.json
+├── docs/               # 项目文档与 API 接口说明
+├── LICENSE
+└── README.md
+```
+---
+
 
 #### 前台启动方式
-
 安装所需文件 yarn install 
 运行 yarn run dev
 
-#### 后端启动方式
-
-1.首先启动redis，进入redis目录终端。输入redis-server回车
-2.导入sql文件，修改数据库与redis连接配置
-3.idea中启动后端项目
-
-### 管理员
-公告管理，产品管理，库存统计，物流信息，订单详情，订单评价，订单信息，缴费记录，销售店管理，产店库存，员工管理，用户管理，数据统计，销售排行，员工统计，管理员管理，供应采购，供应商管理，产品答疑，产品采购，库房预警，销售统计，产品答疑，采购物流
-
-### 用户
-我的信息，个人信息，我的订单，缴费记录，订单评价，产品购买，支付结果
-
 #### 默认后台账户密码
-
 [管理员]
 admin
-1234qwer
+123456
 
-[用户]
+[员工]
 fank
-1234qwer
+123456
 
 #### 项目截图
-
 |  |  |
 |---------------------|---------------------|
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1734395740336.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1734396234216.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1734395722465.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1734396225513.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1734433810791.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1734396214632.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1734433802190.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1734396206466.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1734433792323.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1734396197426.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1734433777545.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1734396188442.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1734433767672.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1734396180576.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1734433753406.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1734396169841.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1734433741800.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1734395932079.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1734396280736.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1734395836533.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1734396268525.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1734395813055.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1734396254785.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1734395801760.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1734396246018.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1734395750343.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/work/936e9baf53eb9a217af4f89c616dc19.png) |
+| ![](./assets/image%20(1).png) | ![](./assets/image%20(2).png) |
+| ![](./assets/image%20(3).png) | ![](./assets/image%20(4).png) |
+| ![](./assets/image%20(5).png) | ![](./assets/image%20(6).png) |
+| ![](./assets/image%20(7).png) | ![](./assets/image%20(8).png) |
+| ![](./assets/image%20(9).png) | ![](./assets/image%20(10).png) |
+| ![](./assets/image%20(11).png) | ![](./assets/image%20(12).png) |
+| ![](./assets/image%20(13).png) | ![](./assets/image%20(14).png) |
+| ![](./assets/image%20(15).png) | ![](./assets/image%20(16).png) |
+| ![](./assets/image%20(17).png) | ![](./assets/image%20(18).png) |
+| ![](./assets/image%20(19).png) | ![](./assets/image%20(20).png) | 
+| ![](./assets/image%20(21).png) | ![](./assets/image%20(22).png) | 
+| ![](./assets/image%20(23).png) | ![](./assets/image%20(24).png) | 
+| ![](./assets/image%20(25).png) | ![](./assets/image%20(26).png) | 
+
 
 #### 演示视频
 
@@ -98,7 +211,10 @@ WeChat: `Storm_Berserker`
 
 > 项目部署调试不好包退！功能逻辑没讲明白包退！
 
+<div align=center><img align="center" src="./assets/product_word.png" alt="fankekeke" /></div>
+
 #### 其它资源
+[2026年-答辩顺利通过-客户评价🀄](https://berserker287.github.io/2026/06/29/2026%E5%B9%B4%E7%AD%94%E8%BE%A9%E9%A1%BA%E5%88%A9%E9%80%9A%E8%BF%87/)
 
 [2025年-答辩顺利通过-客户评价🍜](https://berserker287.github.io/2025/06/18/2025%E5%B9%B4%E7%AD%94%E8%BE%A9%E9%A1%BA%E5%88%A9%E9%80%9A%E8%BF%87/)
 
@@ -116,11 +232,14 @@ WeChat: `Storm_Berserker`
 
 [计算机专业毕业答辩小tips](https://zhuanlan.zhihu.com/p/145911029)
 
-
 #### 接JAVAWEB毕设，纯原创，价格公道，诚信第一
 
 `网站建设、小程序、H5、APP、各种系统 选题+开题报告+任务书+程序定制+安装调试+项目讲解+论文+答辩PPT`
 
 More info: [悲伤的橘子树](https://berserker287.github.io/)
 
-<p><img align="center" src="https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/%E5%90%88%E4%BD%9C%E7%89%A9%E6%96%99%E6%A0%B7%E5%BC%8F%20(3).png" alt="fankekeke" /></p>
+<div align="center"><img align="center" src="./assets/chat_qr_code.png" alt="fankekeke" width=250 /></div>
+
+<p><img align="center" src="./assets/wechat_group.png" alt="fankekeke" /></p>
+
+**感谢查看**
